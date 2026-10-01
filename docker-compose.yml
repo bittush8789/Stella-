@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # 1. Front-end Web Service (Stella Storefront)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:-https://your-project-id.supabase.co}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY:-your-public-anon-key}
+    container_name: stella-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - cache
+    networks:
+      - stella-network
+
+  # 2. Redis Cache Service (For microservices session and rate-limiting)
+  cache:
+    image: redis:7-alpine
+    container_name: stella-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD:-secure_redis_pwd}"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - stella-network
+
+networks:
+  stella-network:
+    driver: bridge
+
+volumes:
+  redis_data:

@@ -1,0 +1,6 @@
+{
+  "name": "Stella - Modern Microservices Clothing Store",
+  "description": "A high-performance modern clothing e-commerce platform built on a clean microservices architecture featuring 50 clothing products, live cart, wishlist, checkout flow, and admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
